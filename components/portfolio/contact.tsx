@@ -144,7 +144,7 @@ export function Contact() {
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Email</p>
-                      <p className="text-foreground">samyog@example.com</p>
+                      <p className="text-foreground">samyogkhadka247@gmail.com</p>
                     </div>
                   </a>
                   <div className="flex items-center gap-4 text-muted-foreground">
@@ -165,7 +165,7 @@ export function Contact() {
                 </h3>
                 <div className="flex gap-4">
                   <a
-                    href="https://github.com"
+                    href="https://github.com/samyog7901"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center hover:bg-primary/10 transition-colors group"
@@ -174,7 +174,7 @@ export function Contact() {
                     <Github className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
                   </a>
                   <a
-                    href="https://linkedin.com"
+                    href="https://www.linkedin.com/in/samyog-khadka-9553372a8/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center hover:bg-primary/10 transition-colors group"

@@ -15,7 +15,7 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-20">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNiIgc3Ryb2tlPSJyZ2JhKDEwMCwxMTYsMTM5LDAuMSkiIHN0cm9rZS13aWR0aD0iMiIvPjwvZz48L3N2Zz4=')] opacity-40" />
 
       <div className="relative z-10 mx-auto max-w-6xl px-6">
@@ -29,7 +29,7 @@ export function Hero() {
             }`}
           >
             {/* Gradient Border/Glow Effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary to-primary/50 rounded-full blur-lg opacity-50 animate-pulse" />
+            <div className="absolute -inset-1 bg-linear-to-r from-primary to-primary/50 rounded-full blur-lg opacity-50 animate-pulse" />
             
             {/* Image Container */}
             <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-background shadow-2xl">
@@ -83,7 +83,7 @@ export function Hero() {
 
             <div className="flex items-center justify-center lg:justify-start gap-6">
               <a
-                href="https://github.com"
+                href="https://github.com/samyog7901"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform"
@@ -92,7 +92,7 @@ export function Hero() {
                 <Github className="h-6 w-6" />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/samyog-khadka-9553372a8/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform"
@@ -101,7 +101,7 @@ export function Hero() {
                 <Linkedin className="h-6 w-6" />
               </a>
               <a
-                href="mailto:samyog@example.com"
+                href="mailto:samyogkhadka247@gmail.com"
                 className="text-muted-foreground hover:text-foreground transition-colors hover:scale-110 transform"
                 aria-label="Email"
               >
