@@ -92,7 +92,7 @@ export function ContactForm() {
             </Button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form  method="POST" onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {error && (
               <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm">
                 {error}
