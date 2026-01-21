@@ -59,8 +59,6 @@ interface Project {
 export function GitHubProjects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
   const [useFallback, setUseFallback] = useState(false);
 
   useEffect(() => {
@@ -120,23 +118,6 @@ export function GitHubProjects() {
     fetchRepos();
   }, []);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   if (loading) {
     return (
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -171,7 +152,7 @@ export function GitHubProjects() {
   }
 
   return (
-    <div ref={sectionRef}>
+    <div>
       {useFallback && (
         <div className="mb-6 p-3 rounded-lg bg-primary/10 border border-primary/20">
           <p className="text-sm text-primary">
@@ -184,12 +165,7 @@ export function GitHubProjects() {
         {projects.map((project, index) => (
           <div
             key={index}
-            className={`group relative p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-500 ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-10"
-            }`}
-            style={{ transitionDelay: `${index * 100}ms` }}
+            className="group relative p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-lg"
           >
             <div className="flex items-start justify-between gap-4 mb-3">
               <div className="flex items-center gap-2 min-w-0">
@@ -211,7 +187,7 @@ export function GitHubProjects() {
               )}
             </div>
 
-            <p className="text-muted-foreground text-sm mb-4 line-clamp-3 min-h-[3.75rem]">
+            <p className="text-muted-foreground text-sm mb-4 line-clamp-3 min-h-14">
               {project.description}
             </p>
 

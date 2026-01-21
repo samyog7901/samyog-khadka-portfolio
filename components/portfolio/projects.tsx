@@ -76,6 +76,7 @@ export function Projects() {
           </p>
 
           <GitHubProjects />
+         
         </div>
       </div>
     </section>
