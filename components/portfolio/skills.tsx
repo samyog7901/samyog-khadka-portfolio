@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { SkillBars } from "@/components/ui/skill-bars";
 
 const skillCategories = [
   {
@@ -65,43 +66,7 @@ export function Skills() {
             learning and adding new tools to my arsenal.
           </p>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {skillCategories.map((category, categoryIndex) => (
-              <div
-                key={category.name}
-                className={`transition-all duration-500 ${
-                  isVisible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-10"
-                }`}
-                style={{ transitionDelay: `${categoryIndex * 100}ms` }}
-              >
-                <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
-                  <span className="w-8 h-0.5 bg-primary" />
-                  {category.name}
-                </h3>
-                <ul className="space-y-3">
-                  {category.skills.map((skill, skillIndex) => (
-                    <li
-                      key={skill}
-                      className={`text-muted-foreground hover:text-foreground transition-colors cursor-default ${
-                        isVisible
-                          ? "opacity-100 translate-x-0"
-                          : "opacity-0 -translate-x-4"
-                      }`}
-                      style={{
-                        transitionDelay: `${
-                          categoryIndex * 100 + skillIndex * 50
-                        }ms`,
-                      }}
-                    >
-                      {skill}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          <SkillBars />
         </div>
       </div>
     </section>

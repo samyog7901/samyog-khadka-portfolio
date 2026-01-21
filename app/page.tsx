@@ -1,6 +1,7 @@
 import { Header } from "@/components/portfolio/header";
 import { Hero } from "@/components/portfolio/hero";
 import { About } from "@/components/portfolio/about";
+import { ExperienceTimeline } from "@/components/ui/experience-timeline";
 import { Projects } from "@/components/portfolio/projects";
 import { Skills } from "@/components/portfolio/skills";
 import { Contact } from "@/components/portfolio/contact";
@@ -12,6 +13,7 @@ export default function Home() {
       <Header />
       <Hero />
       <About />
+      <ExperienceTimeline />
       <Projects />
       <Skills />
       <Contact />

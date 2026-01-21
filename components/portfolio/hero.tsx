@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TypewriterTitle } from "@/components/ui/typewriter-title";
 
 export function Hero() {
   const [mounted, setMounted] = useState(false);
@@ -63,9 +64,9 @@ export function Hero() {
               <span className="text-primary">Samyog Khadka</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-4 leading-relaxed">
-              Full Stack Developer & BCA Student
-            </p>
+            <div className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-4 leading-relaxed">
+              <TypewriterTitle />
+            </div>
 
             <p className="text-base text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed">
               Currently exploring full stack development and building practical
