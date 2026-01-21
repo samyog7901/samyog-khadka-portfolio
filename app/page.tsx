@@ -2,10 +2,11 @@ import { Header } from "@/components/portfolio/header";
 import { Hero } from "@/components/portfolio/hero";
 import { About } from "@/components/portfolio/about";
 import { ExperienceTimeline } from "@/components/ui/experience-timeline";
-import { Projects } from "@/components/portfolio/projects";
+// import { Projects } from "@/components/portfolio/projects";
 import { Skills } from "@/components/portfolio/skills";
 import { Contact } from "@/components/portfolio/contact";
 import { Footer } from "@/components/portfolio/footer";
+import { GitHubProjects } from "@/components/ui/github-projects";
 
 export default function Home() {
   return (
@@ -14,7 +15,7 @@ export default function Home() {
       <Hero />
       <About />
       <ExperienceTimeline />
-      <Projects />
+      <GitHubProjects />
       <Skills />
       <Contact />
       <Footer />
