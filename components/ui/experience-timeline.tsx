@@ -33,7 +33,7 @@ const timelineData: TimelineItem[] = [
     title: "Full Stack Developer",
     organization: "Self-Employed / Freelance",
     location: "Remote",
-    date: "2023 - Present",
+    date: "2025 - Present",
     description:
       "Building web applications using MERN stack. Developing practical projects to solve real-world problems. Contributing to open-source projects and learning new technologies.",
     icon: Briefcase,
