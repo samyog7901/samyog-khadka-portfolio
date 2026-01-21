@@ -19,48 +19,6 @@ interface GitHubRepo {
   fork?: boolean;
 }
 
-const sampleProjects: GitHubRepo[] = [
-  {
-    id: 999,
-    name: "online-bookshop",
-    description: "A comprehensive online bookshop with full CRUD backend functionality. Features include book management, user authentication, and order processing.",
-    html_url: "https://github.com/samyog7901",
-    homepage: "",
-    stargazers_count: 0,
-    forks_count: 0,
-    language: "JavaScript",
-    topics: ["Node.js", "Express", "MongoDB"],
-    updated_at: new Date().toISOString(),
-    fork: false,
-  },
-  {
-    id: 998,
-    name: "portfolio-website",
-    description: "A modern portfolio website built with Next.js, TypeScript, and Tailwind CSS featuring dark mode and smooth animations.",
-    html_url: "https://github.com/samyog7901",
-    homepage: "",
-    stargazers_count: 0,
-    forks_count: 0,
-    language: "TypeScript",
-    topics: ["Next.js", "React", "Tailwind"],
-    updated_at: new Date().toISOString(),
-    fork: false,
-  },
-  {
-    id: 997,
-    name: "mern-stack-project",
-    description: "An ongoing full-stack project built with the MERN stack featuring real-time updates and modern architecture.",
-    html_url: "https://github.com/samyog7901",
-    homepage: "",
-    stargazers_count: 0,
-    forks_count: 0,
-    language: "JavaScript",
-    topics: ["MongoDB", "Express", "React", "Node.js"],
-    updated_at: new Date().toISOString(),
-    fork: false,
-  },
-];
-
 export function GitHubProjects() {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -76,32 +34,28 @@ export function GitHubProjects() {
         );
         
         if (!response.ok) {
+          console.log("GitHub API error, using fallback projects");
           setUseFallback(true);
-          setRepos(sampleProjects);
           setLoading(false);
           return;
         }
         
         const data = await response.json();
+        console.log("GitHub API response:", data);
         
         if (!Array.isArray(data) || data.length === 0) {
+          console.log("No repos found, using fallback");
           setUseFallback(true);
-          setRepos(sampleProjects);
-        } else {
-          const filteredRepos = data
-            .filter((repo: GitHubRepo) => !repo.fork)
-            .slice(0, 6);
-          
-          if (filteredRepos.length === 0) {
-            setUseFallback(true);
-            setRepos(sampleProjects);
-          } else {
-            setRepos(filteredRepos);
-          }
+          setLoading(false);
+          return;
         }
-      } catch {
+        
+        // Show all repos without filtering
+        setRepos(data.slice(0, 6));
+        console.log("Setting repos:", data.slice(0, 6));
+      } catch (err) {
+        console.error("GitHub API fetch failed:", err);
         setUseFallback(true);
-        setRepos(sampleProjects);
       } finally {
         setLoading(false);
       }
@@ -196,7 +150,7 @@ export function GitHubProjects() {
                   {repo.name.replace(/-/g, " ")}
                 </h3>
               </div>
-              {repo.homepage && (
+              {repo.homepage && repo.homepage.length > 0 && (
                 <a
                   href={repo.homepage}
                   target="_blank"
