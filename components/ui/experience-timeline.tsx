@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Calendar, MapPin, GraduationCap, Briefcase, Code2 } from "lucide-react";
+import { Calendar, MapPin, GraduationCap, Briefcase, Code2, ExternalLink } from "lucide-react";
 
 interface TimelineItem {
   id: number;
@@ -12,6 +12,7 @@ interface TimelineItem {
   date: string;
   description: string;
   icon: React.ElementType;
+  link?: string;
 }
 
 const timelineData: TimelineItem[] = [
@@ -19,7 +20,7 @@ const timelineData: TimelineItem[] = [
     id: 1,
     type: "education",
     title: "Bachelor of Computer Application (BCA)",
-    organization: "Pokhara University",
+    organization: "SchEMS college (Pokhara University)",
     location: "Kathmandu, Nepal",
     date: "2022 - Present",
     description:
@@ -40,6 +41,18 @@ const timelineData: TimelineItem[] = [
   {
     id: 3,
     type: "certification",
+    title: "MERN Developer",
+    organization: "Digital Pathshala Itahari",
+    location: "Online",
+    date: "2024",
+    description:
+      "Completed MERN Developer certification. Developed Ecommerce platform as a major project using MongoDB, Express.js, React, and Node.js stack.",
+    icon: Code2,
+    link: "https://www.digitalpathshalanepal.com/",
+  },
+  {
+    id: 4,
+    type: "certification",
     title: "Web Development Bootcamp",
     organization: "Online Learning Platform",
     location: "Online",
@@ -49,10 +62,10 @@ const timelineData: TimelineItem[] = [
     icon: Code2,
   },
   {
-    id: 4,
+    id: 5,
     type: "education",
     title: "Higher Secondary Education",
-    organization: "SchEMS College",
+    organization: "CCRC College",
     location: "Kathmandu, Nepal",
     date: "2020 - 2022",
     description:
@@ -202,6 +215,17 @@ export function ExperienceTimeline() {
                       <p className="text-muted-foreground text-sm leading-relaxed">
                         {item.description}
                       </p>
+                      {item.link && (
+                        <a
+                          href={item.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80 mt-2 transition-colors"
+                        >
+                          View Certificate
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
