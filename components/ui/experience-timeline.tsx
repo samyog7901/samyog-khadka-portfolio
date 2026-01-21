@@ -139,7 +139,7 @@ export function ExperienceTimeline() {
                   key={item.id}
                   className={`relative flex items-start gap-6 ${
                     index % 2 === 0
-                      ? "md:flex-row-reverse"
+                      ? "md:flex-row"
                       : "md:flex-row"
                   }`}
                 >
