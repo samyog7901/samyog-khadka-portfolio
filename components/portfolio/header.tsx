@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const navLinks = [
   { name: "About", href: "#about" },
@@ -52,7 +53,8 @@ export function Header() {
                 {link.name}
               </Link>
             ))}
-            <Button asChild size="sm" className="ml-4">
+            <ThemeToggle />
+            <Button asChild size="sm" className="ml-2">
               <a href="#contact">Get in Touch</a>
             </Button>
           </div>
@@ -86,6 +88,10 @@ export function Header() {
                   {link.name}
                 </Link>
               ))}
+              <div className="flex items-center gap-3 py-2">
+                <span className="text-sm text-muted-foreground">Theme</span>
+                <ThemeToggle />
+              </div>
               <Button asChild size="sm" className="mt-2 w-fit">
                 <a href="#contact">Get in Touch</a>
               </Button>
