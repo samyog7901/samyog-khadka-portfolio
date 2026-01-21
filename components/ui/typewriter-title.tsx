@@ -14,24 +14,40 @@ export function TypewriterTitle() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
+    if (isPaused) return;
+
     const currentText = titles[currentIndex];
     const typingSpeed = 100;
     const deletingSpeed = 50;
     const pauseDuration = 2000;
+    const transitionDelay = 300;
 
     const handleTyping = () => {
       if (isDeleting) {
-        setDisplayedText((prev) => currentText.slice(0, prev.length - 1));
-        if (displayedText === "") {
-          setIsDeleting(false);
-          setCurrentIndex((prev) => (prev + 1) % titles.length);
+        if (displayedText.length > 0) {
+          setDisplayedText((prev) => currentText.slice(0, prev.length - 1));
+        } else {
+          // Deletion complete - pause before starting next title
+          setIsPaused(true);
+          setTimeout(() => {
+            setIsDeleting(false);
+            setCurrentIndex((prev) => (prev + 1) % titles.length);
+            setIsPaused(false);
+          }, transitionDelay);
         }
       } else {
-        setDisplayedText((prev) => currentText.slice(0, prev.length + 1));
-        if (displayedText === currentText) {
-          setTimeout(() => setIsDeleting(true), pauseDuration);
+        if (displayedText.length < currentText.length) {
+          setDisplayedText((prev) => currentText.slice(0, prev.length + 1));
+        } else {
+          // Typing complete - pause before starting deletion
+          setIsPaused(true);
+          setTimeout(() => {
+            setIsDeleting(true);
+            setIsPaused(false);
+          }, pauseDuration);
         }
       }
     };
@@ -39,7 +55,7 @@ export function TypewriterTitle() {
     const timeout = setTimeout(handleTyping, isDeleting ? deletingSpeed : typingSpeed);
 
     return () => clearTimeout(timeout);
-  }, [currentIndex, displayedText, isDeleting]);
+  }, [currentIndex, displayedText, isDeleting, isPaused]);
 
   return (
     <span className="text-primary">
