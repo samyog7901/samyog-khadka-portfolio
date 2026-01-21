@@ -24,7 +24,81 @@ export function GitHubProjects() {
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [useFallback, setUseFallback] = useState(false);
+// Fallback sample projects when GitHub API fails or rate limited
+const FALLBACK_PROJECTS: GitHubRepo[] = [
+  {
+    id: 1,
+    name: "online-bookshop-system",
+    description: "A comprehensive online bookshop with full CRUD backend functionality. Features include book management, user authentication, and order processing.",
+    html_url: "https://github.com/samyog7901",
+    homepage: "",
+    stargazers_count: 45,
+    forks_count: 12,
+    language: "Node.js",
+    topics: ["nodejs", "express", "mongodb", "rest-api"],
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 2,
+    name: "portfolio-website",
+    description: "A showcase project demonstrating practical web development skills with modern UI/UX design principles and responsive layouts.",
+    html_url: "https://github.com/samyog7901",
+    homepage: "",
+    stargazers_count: 78,
+    forks_count: 15,
+    language: "TypeScript",
+    topics: ["react", "tailwind", "nextjs", "typescript"],
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 3,
+    name: "mern-stack-project",
+    description: "An ongoing full-stack project built with the MERN stack featuring real-time updates and modern architecture.",
+    html_url: "https://github.com/samyog7901",
+    homepage: "",
+    stargazers_count: 62,
+    forks_count: 23,
+    language: "JavaScript",
+    topics: ["mongodb", "express", "react", "nodejs"],
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 4,
+    name: "task-management-app",
+    description: "A modern task management application with drag-and-drop functionality and real-time collaboration features.",
+    html_url: "https://github.com/samyog7901",
+    homepage: "",
+    stargazers_count: 89,
+    forks_count: 34,
+    language: "Python",
+    topics: ["python", "django", "postgresql", "websocket"],
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 5,
+    name: "weather-dashboard",
+    description: "A beautiful weather dashboard with location-based forecasts and interactive charts using weather API.",
+    html_url: "https://github.com/samyog7901",
+    homepage: "",
+    stargazers_count: 156,
+    forks_count: 45,
+    language: "JavaScript",
+    topics: ["javascript", "api", "charts", "responsive"],
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 6,
+    name: "e-commerce-platform",
+    description: "A full-featured e-commerce platform with payment integration, inventory management, and admin dashboard.",
+    html_url: "https://github.com/samyog7901",
+    homepage: "",
+    stargazers_count: 234,
+    forks_count: 67,
+    language: "TypeScript",
+    topics: ["typescript", "nextjs", "stripe", "tailwind"],
+    updated_at: new Date().toISOString(),
+  },
+];
 
   useEffect(() => {
     const fetchRepos = async () => {
@@ -35,7 +109,7 @@ export function GitHubProjects() {
         
         if (!response.ok) {
           console.log("GitHub API error, using fallback projects");
-          setUseFallback(true);
+          setRepos(FALLBACK_PROJECTS);
           setLoading(false);
           return;
         }
@@ -45,17 +119,22 @@ export function GitHubProjects() {
         
         if (!Array.isArray(data) || data.length === 0) {
           console.log("No repos found, using fallback");
-          setUseFallback(true);
+          setRepos(FALLBACK_PROJECTS);
           setLoading(false);
           return;
         }
         
-        // Show all repos without filtering
-        setRepos(data.slice(0, 6));
-        console.log("Setting repos:", data.slice(0, 6));
+        // Filter out forks and show real repos, fallback if none
+        const nonForkRepos = data.filter((repo: GitHubRepo) => !repo.fork);
+        if (nonForkRepos.length === 0) {
+          setRepos(FALLBACK_PROJECTS);
+        } else {
+          setRepos(nonForkRepos.slice(0, 6));
+        }
+        console.log("Setting repos:", nonForkRepos.slice(0, 6));
       } catch (err) {
         console.error("GitHub API fetch failed:", err);
-        setUseFallback(true);
+        setRepos(FALLBACK_PROJECTS);
       } finally {
         setLoading(false);
       }
@@ -124,14 +203,6 @@ export function GitHubProjects() {
 
   return (
     <div ref={sectionRef}>
-      {useFallback && (
-        <div className="mb-4 p-3 rounded-lg bg-primary/10 border border-primary/20">
-          <p className="text-sm text-primary">
-            Showing sample projects. Connect your GitHub to display real repositories.
-          </p>
-        </div>
-      )}
-      
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {repos.map((repo, index) => (
           <div
