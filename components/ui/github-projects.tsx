@@ -1,9 +1,37 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Github, ExternalLink, Star, GitFork } from "lucide-react";
+import { Github, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+
+// Fallback projects data - shown when GitHub API fails or is rate limited
+const FALLBACK_PROJECTS = [
+  {
+    title: "Online Bookshop System",
+    description: "A comprehensive online bookshop with full CRUD backend functionality. Features include book management, user authentication, and order processing.",
+    tags: ["Node.js", "Express", "MongoDB", "REST API"],
+    github: "https://github.com/samyog7901",
+    demo: "#",
+    featured: true,
+  },
+  {
+    title: "Web Development Portfolio",
+    description: "A showcase project demonstrating practical web development skills with modern UI/UX design principles and responsive layouts.",
+    tags: ["React", "Tailwind CSS", "Next.js"],
+    github: "https://github.com/samyog7901",
+    demo: "#",
+    featured: true,
+  },
+  {
+    title: "MERN Stack Project",
+    description: "An ongoing full-stack project built with the MERN stack (MongoDB, Express, React, Node.js) featuring real-time updates and modern architecture.",
+    tags: ["MongoDB", "Express", "React", "Node.js"],
+    github: "https://github.com/samyog7901",
+    demo: "#",
+    featured: true,
+  },
+];
 
 interface GitHubRepo {
   id: number;
@@ -19,86 +47,21 @@ interface GitHubRepo {
   fork?: boolean;
 }
 
+interface Project {
+  title: string;
+  description: string;
+  tags: string[];
+  github: string;
+  demo: string;
+  featured: boolean;
+}
+
 export function GitHubProjects() {
-  const [repos, setRepos] = useState<GitHubRepo[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-// Fallback sample projects when GitHub API fails or rate limited
-const FALLBACK_PROJECTS: GitHubRepo[] = [
-  {
-    id: 1,
-    name: "online-bookshop-system",
-    description: "A comprehensive online bookshop with full CRUD backend functionality. Features include book management, user authentication, and order processing.",
-    html_url: "https://github.com/samyog7901",
-    homepage: "",
-    stargazers_count: 45,
-    forks_count: 12,
-    language: "Node.js",
-    topics: ["nodejs", "express", "mongodb", "rest-api"],
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: 2,
-    name: "portfolio-website",
-    description: "A showcase project demonstrating practical web development skills with modern UI/UX design principles and responsive layouts.",
-    html_url: "https://github.com/samyog7901",
-    homepage: "",
-    stargazers_count: 78,
-    forks_count: 15,
-    language: "TypeScript",
-    topics: ["react", "tailwind", "nextjs", "typescript"],
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: 3,
-    name: "mern-stack-project",
-    description: "An ongoing full-stack project built with the MERN stack featuring real-time updates and modern architecture.",
-    html_url: "https://github.com/samyog7901",
-    homepage: "",
-    stargazers_count: 62,
-    forks_count: 23,
-    language: "JavaScript",
-    topics: ["mongodb", "express", "react", "nodejs"],
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: 4,
-    name: "task-management-app",
-    description: "A modern task management application with drag-and-drop functionality and real-time collaboration features.",
-    html_url: "https://github.com/samyog7901",
-    homepage: "",
-    stargazers_count: 89,
-    forks_count: 34,
-    language: "Python",
-    topics: ["python", "django", "postgresql", "websocket"],
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: 5,
-    name: "weather-dashboard",
-    description: "A beautiful weather dashboard with location-based forecasts and interactive charts using weather API.",
-    html_url: "https://github.com/samyog7901",
-    homepage: "",
-    stargazers_count: 156,
-    forks_count: 45,
-    language: "JavaScript",
-    topics: ["javascript", "api", "charts", "responsive"],
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: 6,
-    name: "e-commerce-platform",
-    description: "A full-featured e-commerce platform with payment integration, inventory management, and admin dashboard.",
-    html_url: "https://github.com/samyog7901",
-    homepage: "",
-    stargazers_count: 234,
-    forks_count: 67,
-    language: "TypeScript",
-    topics: ["typescript", "nextjs", "stripe", "tailwind"],
-    updated_at: new Date().toISOString(),
-  },
-];
+  const [useFallback, setUseFallback] = useState(false);
 
   useEffect(() => {
     const fetchRepos = async () => {
@@ -106,35 +69,49 @@ const FALLBACK_PROJECTS: GitHubRepo[] = [
         const response = await fetch(
           "https://api.github.com/users/samyog7901/repos?sort=updated&per_page=10"
         );
-        
+
         if (!response.ok) {
           console.log("GitHub API error, using fallback projects");
-          setRepos(FALLBACK_PROJECTS);
+          setUseFallback(true);
+          setProjects(FALLBACK_PROJECTS);
           setLoading(false);
           return;
         }
-        
+
         const data = await response.json();
         console.log("GitHub API response:", data);
-        
+
         if (!Array.isArray(data) || data.length === 0) {
           console.log("No repos found, using fallback");
-          setRepos(FALLBACK_PROJECTS);
+          setUseFallback(true);
+          setProjects(FALLBACK_PROJECTS);
           setLoading(false);
           return;
         }
-        
-        // Filter out forks and show real repos, fallback if none
+
+        // Filter out forks and convert to Project format
         const nonForkRepos = data.filter((repo: GitHubRepo) => !repo.fork);
+
         if (nonForkRepos.length === 0) {
-          setRepos(FALLBACK_PROJECTS);
+          console.log("No non-fork repos, using fallback");
+          setUseFallback(true);
+          setProjects(FALLBACK_PROJECTS);
         } else {
-          setRepos(nonForkRepos.slice(0, 6));
+          // Convert GitHub repos to our project format
+          const formattedProjects: Project[] = nonForkRepos.slice(0, 6).map((repo: GitHubRepo) => ({
+            title: repo.name.replace(/-/g, " "),
+            description: repo.description || "A project showcasing development skills and practical implementations.",
+            tags: repo.topics?.slice(0, 4) || [repo.language || "Code"],
+            github: repo.html_url,
+            demo: repo.homepage || "#",
+            featured: true,
+          }));
+          setProjects(formattedProjects);
         }
-        console.log("Setting repos:", nonForkRepos.slice(0, 6));
       } catch (err) {
         console.error("GitHub API fetch failed:", err);
-        setRepos(FALLBACK_PROJECTS);
+        setUseFallback(true);
+        setProjects(FALLBACK_PROJECTS);
       } finally {
         setLoading(false);
       }
@@ -160,14 +137,6 @@ const FALLBACK_PROJECTS: GitHubRepo[] = [
     return () => observer.disconnect();
   }, []);
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      year: "numeric",
-    });
-  };
-
   if (loading) {
     return (
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -189,7 +158,7 @@ const FALLBACK_PROJECTS: GitHubRepo[] = [
     );
   }
 
-  if (repos.length === 0) {
+  if (projects.length === 0) {
     return (
       <div className="text-center py-12">
         <Github className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -203,10 +172,18 @@ const FALLBACK_PROJECTS: GitHubRepo[] = [
 
   return (
     <div ref={sectionRef}>
+      {useFallback && (
+        <div className="mb-6 p-3 rounded-lg bg-primary/10 border border-primary/20">
+          <p className="text-sm text-primary">
+            Showing sample projects. Connect your GitHub to display real repositories.
+          </p>
+        </div>
+      )}
+
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {repos.map((repo, index) => (
+        {projects.map((project, index) => (
           <div
-            key={repo.id}
+            key={index}
             className={`group relative p-6 rounded-2xl bg-card border border-border hover:border-primary/50 transition-all duration-500 ${
               isVisible
                 ? "opacity-100 translate-y-0"
@@ -218,12 +195,12 @@ const FALLBACK_PROJECTS: GitHubRepo[] = [
               <div className="flex items-center gap-2 min-w-0">
                 <Github className="h-5 w-5 text-primary shrink-0" />
                 <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors truncate">
-                  {repo.name.replace(/-/g, " ")}
+                  {project.title}
                 </h3>
               </div>
-              {repo.homepage && repo.homepage.length > 0 && (
+              {project.demo && project.demo !== "#" && (
                 <a
-                  href={repo.homepage}
+                  href={project.demo}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-foreground transition-colors shrink-0"
@@ -234,47 +211,33 @@ const FALLBACK_PROJECTS: GitHubRepo[] = [
               )}
             </div>
 
-            <p className="text-muted-foreground text-sm mb-4 line-clamp-2 min-h-10">
-              {repo.description ||
-                "A project showcasing development skills and practical implementations."}
+            <p className="text-muted-foreground text-sm mb-4 line-clamp-3 min-h-[3.75rem]">
+              {project.description}
             </p>
 
-            <div className="flex items-center justify-between text-xs text-muted-foreground mb-4 flex-wrap gap-2">
-              <div className="flex items-center gap-3">
-                {repo.language && (
-                  <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-primary" />
-                    {repo.language}
-                  </span>
-                )}
-                <span className="flex items-center gap-1">
-                  <Star className="h-3 w-3" />
-                  {repo.stargazers_count}
-                </span>
-                <span className="flex items-center gap-1">
-                  <GitFork className="h-3 w-3" />
-                  {repo.forks_count}
-                </span>
-              </div>
-              <span>{formatDate(repo.updated_at)}</span>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {project.tags.slice(0, 4).map((tag) => (
+                <Badge key={tag} variant="secondary" className="text-xs">
+                  {tag}
+                </Badge>
+              ))}
             </div>
 
-            {(repo.topics || []).length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                {(repo.topics || []).slice(0, 3).map((topic) => (
-                  <Badge key={topic} variant="secondary" className="text-xs">
-                    {topic}
-                  </Badge>
-                ))}
-              </div>
-            )}
-
-            <Button variant="outline" size="sm" className="w-full" asChild>
-              <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
-                <Github className="h-4 w-4 mr-2" />
-                View Repository
-              </a>
-            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" className="flex-1" asChild>
+                <a href={project.github} target="_blank" rel="noopener noreferrer">
+                  <Github className="h-4 w-4 mr-2" />
+                  Code
+                </a>
+              </Button>
+              {project.demo && project.demo !== "#" && (
+                <Button variant="ghost" size="sm" asChild>
+                  <a href={project.demo} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                </Button>
+              )}
+            </div>
           </div>
         ))}
       </div>
