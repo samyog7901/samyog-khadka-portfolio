@@ -20,11 +20,11 @@ const timelineData: TimelineItem[] = [
     id: 1,
     type: "education",
     title: "Bachelor of Computer Application (BCA)",
-    organization: "SchEMS college (Pokhara University)",
+    organization: "SchEMS College (Pokhara University)",
     location: "Kathmandu, Nepal",
-    date: "2022 - Present",
+    date: "2023 - Present",
     description:
-      "Currently pursuing BCA with focus on software development, database management, and web technologies. Active participant in coding competitions and technical events.",
+      "Currently pursuing BCA with focus on software development, database management and web technologies. Active participant in coding competitions and technical events.",
     icon: GraduationCap,
   },
   {
@@ -44,9 +44,9 @@ const timelineData: TimelineItem[] = [
     title: "MERN Developer",
     organization: "Digital Pathshala Itahari",
     location: "Online",
-    date: "2024",
+    date: "2024-2025",
     description:
-      "Completed MERN Developer certification. Developed Ecommerce platform as a major project using MongoDB, Express.js, React, and Node.js stack.",
+      "Completed MERN Developer certification. Developed Ecommerce platform as a major project using MongoDB, Express.js, React and Node.js stack.",
     icon: Code2,
     link: "https://www.digitalpathshalanepal.com/",
   },
@@ -54,12 +54,13 @@ const timelineData: TimelineItem[] = [
     id: 4,
     type: "certification",
     title: "Web Development Bootcamp",
-    organization: "Online Learning Platform",
+    organization: "Digital Pathshala Itahari",
     location: "Online",
     date: "2023",
     description:
       "Completed comprehensive web development course covering HTML, CSS, JavaScript, React, Node.js, and MongoDB. Built multiple projects during the program.",
     icon: Code2,
+    link: "https://www.digitalpathshalanepal.com/",
   },
   {
     id: 5,
@@ -175,7 +176,8 @@ export function ExperienceTimeline() {
                         transitionDelay: `${index * 150 + 100}ms`,
                       }}
                     >
-                      <div className="flex items-center gap-2 mb-2">
+                      {/* Badge */}
+                      <div className="flex items-center gap-2 mb-3">
                         <Badge
                           variant="secondary"
                           className={`text-xs ${
@@ -191,36 +193,42 @@ export function ExperienceTimeline() {
                         </Badge>
                       </div>
 
-                      <h3 className="text-lg font-semibold text-foreground mb-1">
+                      {/* Title */}
+                      <h3 className="text-lg font-semibold text-foreground mb-1 leading-tight">
                         {item.title}
                       </h3>
 
-                      <p className="text-primary font-medium mb-2">
+                      {/* Organization */}
+                      <p className="text-primary font-medium mb-3">
                         {item.organization}
                       </p>
 
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
-                          {item.date}
+                      {/* Date and Location */}
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground mb-4">
+                        <span className="flex items-center gap-1.5">
+                          <Calendar className="h-4 w-4 shrink-0" />
+                          <span>{item.date}</span>
                         </span>
                         {item.location && (
-                          <span className="flex items-center gap-1">
-                            <MapPin className="h-4 w-4" />
-                            {item.location}
+                          <span className="flex items-center gap-1.5">
+                            <MapPin className="h-4 w-4 shrink-0" />
+                            <span>{item.location}</span>
                           </span>
                         )}
                       </div>
 
+                      {/* Description */}
                       <p className="text-muted-foreground text-sm leading-relaxed">
                         {item.description}
                       </p>
+
+                      {/* Link */}
                       {item.link && (
                         <a
                           href={item.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80 mt-2 transition-colors"
+                          className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80 mt-3 transition-colors"
                         >
                           View Certificate
                           <ExternalLink className="h-3 w-3" />
