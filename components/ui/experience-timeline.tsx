@@ -139,7 +139,7 @@ export function ExperienceTimeline() {
                   key={item.id}
                   className={`relative flex items-start gap-6 ${
                     index % 2 === 0
-                      ? "md:flex-row"
+                      ? "md:flex-row-reverse"
                       : "md:flex-row"
                   }`}
                 >
@@ -163,7 +163,7 @@ export function ExperienceTimeline() {
                   {/* Content */}
                   <div
                     className={`ml-20 md:ml-0 w-full md:w-[calc(50%-4rem)] ${
-                      index % 2 === 0 ? "md:text-right" : "md:text-left"
+                      index % 2 === 0 ? "md:text-left" : "md:text-left"
                     }`}
                   >
                     <div
