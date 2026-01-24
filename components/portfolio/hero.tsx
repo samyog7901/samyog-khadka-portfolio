@@ -35,7 +35,7 @@ export function Hero() {
             {/* Image Container */}
             <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-background shadow-2xl">
               <Image
-                src="/samyog-portfolio.png"
+                src="/pp1.png"
                 alt="Samyog Khadka - Full Stack Developer"
                 fill
                 className="object-cover"
