@@ -51,10 +51,28 @@ interface Project {
   featured: boolean;
 }
 
-// Helper function to check if URL is a Vercel deployment
-function isVercelDeployment(url: string): boolean {
-  if (!url) return false;
+// Helper function to check if URL is a valid Vercel deployment
+function isValidDeployment(url: string): boolean {
+  if (!url || url.trim() === "") return false;
   return VERCEL_DOMAINS.some((domain) => url.includes(domain));
+}
+
+// Helper function to check if a URL returns a valid response (not 404)
+async function isDemoAccessible(url: string): Promise<boolean> {
+  if (!url || url.trim() === "") return false;
+  
+  try {
+    // Use no-cors to avoid CORS issues, just check if we can reach it
+    const response = await fetch(url, { 
+      method: 'HEAD',
+      mode: 'no-cors',
+      cache: 'no-cache'
+    });
+    return true;
+  } catch (error) {
+    console.log(`Demo URL not accessible: ${url}`);
+    return false;
+  }
 }
 
 export function GitHubProjects() {
@@ -112,20 +130,36 @@ export function GitHubProjects() {
             featured: true,
           }));
 
-          // Filter to only show projects with Vercel deployments OR include all projects
-          const projectsWithDemo = formattedProjects.filter((project) =>
-            isVercelDeployment(project.demo)
+          // Only show projects with demo URLs (frontend projects)
+          const frontendProjects = formattedProjects.filter((project) =>
+            project.demo && project.demo.trim() !== ""
           );
-          
-          // Include projects without demo URLs but with a GitHub repo
-          const projectsWithoutDemo = formattedProjects.filter((project) => 
-            !isVercelDeployment(project.demo) && project.github
-          );
-          
-          // Combine: projects with demo first, then projects without demo
-          const allDisplayProjects = [...projectsWithDemo, ...projectsWithoutDemo];
 
-          console.log(`Found ${projectsWithDemo.length} Vercel-deployed projects and ${projectsWithoutDemo.length} projects without deployment`);
+          // Check which demo URLs are actually accessible
+          const accessibleDemos: Record<string, boolean> = {};
+          for (const project of frontendProjects) {
+            if (isValidDeployment(project.demo)) {
+              const isAccessible = await isDemoAccessible(project.demo);
+              accessibleDemos[project.demo] = isAccessible;
+              // Add small delay to avoid rate limiting
+              await new Promise(resolve => setTimeout(resolve, 100));
+            }
+          }
+
+          // Categorize projects
+          const projectsWithWorkingDemo = frontendProjects.filter(
+            (project) => isValidDeployment(project.demo) && accessibleDemos[project.demo]
+          );
+          
+          const projectsWithBrokenDemo = frontendProjects.filter(
+            (project) => project.demo && project.demo.trim() !== "" && 
+            (!isValidDeployment(project.demo) || !accessibleDemos[project.demo])
+          );
+
+          // Only show frontend projects (both working and broken demos)
+          const allDisplayProjects = [...projectsWithWorkingDemo, ...projectsWithBrokenDemo];
+
+          console.log(`Found ${projectsWithWorkingDemo.length} projects with working demos and ${projectsWithBrokenDemo.length} projects with broken/empty demos`);
 
           if (allDisplayProjects.length === 0) {
             console.log("No projects found, using fallback");
@@ -185,9 +219,9 @@ export function GitHubProjects() {
     return (
       <div className="text-center py-12">
         <Github className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-        <p className="text-muted-foreground mb-4">No production projects deployed on Vercel</p>
+        <p className="text-muted-foreground mb-4">No frontend projects with demo URLs found</p>
         <p className="text-sm text-muted-foreground">
-          Deploy projects to Vercel to see them here
+          Add demo URLs to your GitHub repositories to see them here
         </p>
       </div>
     );
@@ -198,15 +232,15 @@ export function GitHubProjects() {
       {useFallback && (
         <div className="mb-6 p-3 rounded-lg bg-primary/10 border border-primary/20">
           <p className="text-sm text-primary">
-            Showing sample production projects. Connect your GitHub to display real Vercel-deployed repositories.
+            Showing sample frontend projects. Connect your GitHub to display your repositories with demo URLs.
           </p>
         </div>
       )}
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {displayProjects.map((project, index) => {
-          // Check if this is a frontend project (has Vercel deployment)
-          const isFrontend = isVercelDeployment(project.demo);
+          // Check if this is a frontend project (has valid Vercel deployment)
+          const isFrontend = isValidDeployment(project.demo);
 
           return (
             <div
@@ -280,7 +314,7 @@ export function GitHubProjects() {
           <Button
             variant="outline"
             onClick={toggleShowMore}
-            className="min-w-[160px]"
+            className="min-w-40"
           >
             {showAll ? (
               <>
@@ -300,10 +334,9 @@ export function GitHubProjects() {
       {/* Project count info */}
       <div className="text-center mt-4">
         <p className="text-sm text-muted-foreground">
-          Showing {displayProjects.length} of {allProjects.length} production projects
+          Showing {displayProjects.length} of {allProjects.length} frontend projects
         </p>
       </div>
     </div>
   );
 }
-
