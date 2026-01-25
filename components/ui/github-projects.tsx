@@ -112,21 +112,29 @@ export function GitHubProjects() {
             featured: true,
           }));
 
-          // Filter to only show Vercel-deployed projects
-          const vercelProjects = formattedProjects.filter((project) =>
+          // Filter to only show projects with Vercel deployments OR include all projects
+          const projectsWithDemo = formattedProjects.filter((project) =>
             isVercelDeployment(project.demo)
           );
+          
+          // Include projects without demo URLs but with a GitHub repo
+          const projectsWithoutDemo = formattedProjects.filter((project) => 
+            !isVercelDeployment(project.demo) && project.github
+          );
+          
+          // Combine: projects with demo first, then projects without demo
+          const allDisplayProjects = [...projectsWithDemo, ...projectsWithoutDemo];
 
-          console.log(`Found ${vercelProjects.length} Vercel-deployed projects out of ${formattedProjects.length} total projects`);
+          console.log(`Found ${projectsWithDemo.length} Vercel-deployed projects and ${projectsWithoutDemo.length} projects without deployment`);
 
-          if (vercelProjects.length === 0) {
-            console.log("No Vercel-deployed projects found, using fallback");
+          if (allDisplayProjects.length === 0) {
+            console.log("No projects found, using fallback");
             setUseFallback(true);
             setAllProjects(FALLBACK_PROJECTS);
             setDisplayProjects(FALLBACK_PROJECTS.slice(0, INITIAL_PROJECT_COUNT));
           } else {
-            setAllProjects(vercelProjects);
-            setDisplayProjects(vercelProjects.slice(0, INITIAL_PROJECT_COUNT));
+            setAllProjects(allDisplayProjects);
+            setDisplayProjects(allDisplayProjects.slice(0, INITIAL_PROJECT_COUNT));
           }
         }
       } catch (err) {
@@ -212,7 +220,7 @@ export function GitHubProjects() {
                     {project.title}
                   </h3>
                 </div>
-                {isFrontend && (
+                {isFrontend && project.demo && (
                   <a
                     href={project.demo}
                     target="_blank"
@@ -235,9 +243,13 @@ export function GitHubProjects() {
                     {tag}
                   </Badge>
                 ))}
-                {isFrontend && (
+                {isFrontend && project.demo ? (
                   <Badge variant="default" className="text-xs bg-green-600">
                     Frontend
+                  </Badge>
+                ) : (
+                  <Badge variant="secondary" className="text-xs">
+                    Not Deployed
                   </Badge>
                 )}
               </div>
@@ -249,7 +261,7 @@ export function GitHubProjects() {
                     Code
                   </a>
                 </Button>
-                {isFrontend && (
+                {isFrontend && project.demo && (
                   <Button variant="ghost" size="sm" asChild>
                     <a href={project.demo} target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="h-4 w-4" />

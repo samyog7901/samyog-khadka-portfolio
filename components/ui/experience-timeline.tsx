@@ -167,7 +167,7 @@ export function ExperienceTimeline() {
                     }`}
                   >
                     <div
-                      className={`p-6 rounded-2xl bg-card border border-border hover:shadow-lg hover:shadow-green-500 hover:border-primary/50 transition-all duration-300 ${
+                      className={`p-6 rounded-2xl bg-card border border-border hover:shadow hover:shadow-green-200 hover:border-primary/50 transition-all duration-200 ${
                         isVisible
                           ? "opacity-100 translate-y-0"
                           : "opacity-0 translate-y-10"
