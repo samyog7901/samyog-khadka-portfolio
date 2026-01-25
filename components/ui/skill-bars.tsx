@@ -78,10 +78,10 @@ export function SkillBars() {
     {
       name: "Frontend",
       skills: [
-        { name: "React", level: 90 },
-        { name: "Next.js", level: 85 },
-        { name: "TypeScript", level: 80 },
-        { name: "Tailwind CSS", level: 95 },
+        { name: "React", level: 85 },
+        { name: "Next.js", level: 75 },
+        { name: "TypeScript", level: 75 },
+        { name: "Tailwind CSS", level: 85 },
         { name: "HTML/CSS", level: 95 },
       ],
     },
@@ -90,14 +90,14 @@ export function SkillBars() {
       skills: [
         { name: "Node.js", level: 85 },
         { name: "Express", level: 80 },
-        { name: "Python", level: 70 },
+        { name: "Python", level: 60 },
         { name: "REST APIs", level: 85 },
       ],
     },
     {
       name: "Database",
       skills: [
-        { name: "MongoDB", level: 85 },
+        { name: "MongoDB", level: 80 },
         { name: "PostgreSQL", level: 70 },
         { name: "MySQL", level: 75 },
       ],
@@ -105,10 +105,10 @@ export function SkillBars() {
     {
       name: "Tools & DevOps",
       skills: [
-        { name: "Git", level: 90 },
+        { name: "Git/GitHub", level: 70 },
         { name: "Docker", level: 60 },
-        { name: "Postman", level: 85 },
-        { name: "VS Code", level: 95 },
+        { name: "Postman", level: 80 },
+        { name: "VS Code", level: 85 },
       ],
     },
   ];

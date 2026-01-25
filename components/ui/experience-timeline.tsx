@@ -58,7 +58,7 @@ const timelineData: TimelineItem[] = [
     location: "Online",
     date: "2023",
     description:
-      "Completed comprehensive web development course covering HTML, CSS, JavaScript, React, Node.js, and MongoDB. Built multiple projects during the program.",
+      "Completed comprehensive web development course covering HTML, CSS, JavaScript, React, Node.js and MongoDB. Built multiple projects during the program.",
     icon: Code2,
     link: "https://www.digitalpathshalanepal.com/",
   },
