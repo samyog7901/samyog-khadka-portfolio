@@ -75,9 +75,46 @@
   --sidebar-ring: oklch(0.65 0.15 180);
 }
 
+/* Custom shape animation keyframes */
+@keyframes border-radius-morph {
+  0%, 100% {
+    border-radius: 9999px;
+  }
+  50% {
+    border-radius: 2rem;
+  }
+}
+
+/* Pause float animation on hover */
+@keyframes float-vertical {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@layer utilities {
+  .animate-float-vertical {
+    animation: float-vertical 3s ease-in-out infinite;
+  }
+  
+  .animate-float-vertical:hover {
+    animation-play-state: paused !important;
+  }
+}
+
 @theme inline {
   --font-sans: 'Geist', 'Geist Fallback';
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+
+  /* Custom shape animation */
+  --animate-border-radius-morph: border-radius-morph 3s ease-in-out infinite;
+
+  /* Custom vertical float animation */
+  --animate-float-vertical: float-vertical 3s ease-in-out infinite;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

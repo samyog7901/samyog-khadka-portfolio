@@ -23,7 +23,7 @@ export function Hero() {
         <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20">
           {/* Image Section */}
           <div
-            className={`relative transition-all duration-1000 ${
+            className={`relative transition-all duration-1000 animate-float-vertical ${
               mounted
                 ? "opacity-100 translate-x-0"
                 : "opacity-0 -translate-x-10"
@@ -33,7 +33,7 @@ export function Hero() {
             <div className="absolute -inset-1 bg-linear-to-r from-primary to-primary/50 rounded-full blur-lg opacity-50 animate-pulse" />
             
             {/* Image Container */}
-            <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-background shadow-2xl">
+            <div className="relative w-64 h-64 md:w-80 md:h-80 overflow-hidden border-4 border-background shadow-2xl rounded-full">
               <Image
                 src="/pp1.png"
                 alt="Samyog Khadka - Full Stack Developer"

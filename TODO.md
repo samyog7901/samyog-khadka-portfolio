@@ -1,23 +1,18 @@
-# TODO: Project Section Enhancements
+# TODO: Infinite Shape Animation for Profile Image
 
-## Task: Filter Vercel production projects, add "Show More" toggle, and differentiate frontend/backend links
+## Plan
+- [x] Read and understand the codebase
+- [x] Add custom keyframe animation to `app/globals.css`
+- [x] Update `components/portfolio/hero.tsx` to apply the animation
+- [x] Verify the implementation
 
-### Steps:
-1. [ ] Update github-projects.tsx to filter only Vercel-deployed projects
-2. [ ] Add "Show More" functionality to limit initial display and expand on click
-3. [ ] Add logic to detect frontend (has Vercel URL) vs backend (no Vercel URL)
-4. [ ] Display both Code and Site links for frontend projects
-5. [ ] Display only Code link for backend projects
-6. [ ] Update fallback projects to include Vercel-deployed projects only
+## Details
+- Target div: Lines 36-44 in `components/portfolio/hero.tsx`
+- Animation: Infinite transition between `rounded-full` and `rounded-4xl`
 
-### Changes Summary:
-- Filter repos by homepage URL containing "vercel.app"
-- Initial display: 6 projects with "Show More" button
-- Expanded display: All projects with "Show Less" button
-- Frontend projects: Show "Code" and "Site" buttons
-- Backend projects: Show only "Code" button
+## Changes Made
+1. **app/globals.css**: Added custom `@keyframes border-radius-morph` animation that transitions between `border-radius: 9999px` (rounded-full) and `border-radius: 2rem` (rounded-4xl) over 4 seconds, running infinitely.
 
-### Status:
-- [x] In Progress
-- [x] Completed
+2. **components/portfolio/hero.tsx**: Applied `animate-border-radius-morph` class to the image container div and removed the static `rounded-full` class (since the animation handles it).
+
 
